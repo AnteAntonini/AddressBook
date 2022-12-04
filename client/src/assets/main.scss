@@ -1,0 +1,32 @@
+@import './base.scss';
+
+#app {
+  height: 100vh;
+  width: 100%;
+  font-weight: normal;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  color: var(--vt-c-white);
+  border-radius: 4px;
+  border-style: none;
+  font-weight: bold;
+  cursor: pointer;
+
+  &-large {
+    padding: 1rem 2rem;
+    margin-bottom: 2rem;
+  }
+
+  &-primary {
+    background-color: #03a9f4;
+    border-color: #03a9f4;
+  }
+   
+  &-warning {
+    background-color: #ff5252;
+    border-color: #ff5252;
+  }
+}
