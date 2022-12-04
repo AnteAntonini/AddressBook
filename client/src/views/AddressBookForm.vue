@@ -1,4 +1,15 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useAddressBookStore } from "@/stores/address-book";
+
+const addressBookStore = useAddressBookStore();
+
+const contact = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  country: "",
+};
+</script>
 
 <template>
   <div class="address-book-form-wrapper">
@@ -10,23 +21,40 @@
         </RouterLink>
       </div>
       <div class="address-book-form-content">
+        <form @submit.prevent="addressBookStore.addContact"></form>
         <div class="address-book-form_input-row">
           <h3>First Name</h3>
-          <input type="text" class="address-book-form_input" required />
+          <input
+            type="text"
+            v-model="contact.firstName"
+            class="address-book-form_input"
+            required
+          />
         </div>
         <div class="address-book-form_input-row">
           <h3>Last Name</h3>
-          <input type="text" class="address-book-form_input" required />
+          <input
+            type="text"
+            v-model="contact.lastName"
+            class="address-book-form_input"
+            required
+          />
         </div>
         <div class="address-book-form_input-row">
           <h3>Email</h3>
-          <input type="text" class="address-book-form_input" required />
+          <input
+            type="text"
+            v-model="contact.email"
+            class="address-book-form_input"
+            required
+          />
         </div>
         <div class="address-book-form_input-row">
           <h3>Country</h3>
           <select
             name="country"
             id="country"
+            v-model="contact.country"
             class="address-book-form_input"
             required
           >
@@ -36,7 +64,7 @@
         </div>
       </div>
       <div class="address-book-form-action">
-        <button>Create</button>
+        <button type="submit">Create</button>
         <button>Cancel</button>
       </div>
     </div>
