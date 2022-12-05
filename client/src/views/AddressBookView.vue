@@ -25,7 +25,9 @@ const tableHeaders = [
 ];
 
 const tableItems = ref<Array<AddressBookTableItem>>([]);
-tableItems.value = useAddressBookStore().addressBookItems;
+tableItems.value = useAddressBookStore().addressBookContacts;
+
+const removeContact = useAddressBookStore().removeContact;
 </script>
 
 <template>
@@ -44,16 +46,18 @@ tableItems.value = useAddressBookStore().addressBookItems;
           </tr>
         </thead>
         <tbody>
-          <template v-for="item in tableItems" :key="item.email">
+          <template v-for="(item, index) in tableItems" :key="item.email">
             <tr class="address-book-table-row">
               <td>{{ item.firstName }}</td>
               <td>{{ item.lastName }}</td>
               <td>{{ item.email }}</td>
               <td>{{ item.country }}</td>
-              <RouterLink to="/form">
+              <RouterLink :to="{ name: 'form', params: { id: index } }">
                 <button class="btn btn-primary btn-spacing">Edit</button>
               </RouterLink>
-              <button class="btn btn-warning">Delete</button>
+              <button class="btn btn-warning" @click="removeContact(index)">
+                Delete
+              </button>
             </tr>
           </template>
         </tbody>
@@ -91,7 +95,7 @@ tableItems.value = useAddressBookStore().addressBookItems;
     overflow-x: auto;
 
     &-row {
-      border-bottom: 1px solid lightgray;
+      border-top: 1px solid lightgray;
     }
 
     thead {
