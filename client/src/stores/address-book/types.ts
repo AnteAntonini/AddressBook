@@ -10,4 +10,10 @@ type AddressBookTableItem = {
   country: string;
 };
 
-export type { AddressBookTableItem, AddressBookTableHeader };
+type CountryListItem = {
+  alpha3Code: string;
+  independent: boolean;
+  name: string;
+};
+
+export type { AddressBookTableItem, AddressBookTableHeader, CountryListItem };

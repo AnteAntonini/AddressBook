@@ -20,6 +20,13 @@
     margin-bottom: 2rem;
   }
 
+  &-neutral {
+    background-color: transparent;
+    border-style: 1px solid lightgray;
+    border: 1px solid lightgray;
+    color: black;
+  }
+
   &-primary {
     background-color: #03a9f4;
     border-color: #03a9f4;

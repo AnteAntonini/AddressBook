@@ -10,7 +10,7 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: "/form",
+      path: "/form/:id?",
       name: "form",
       component: () => import("../views/AddressBookForm.vue"),
     },
