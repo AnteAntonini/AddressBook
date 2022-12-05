@@ -1,13 +1,58 @@
 <script setup lang="ts">
-import { useAddressBookStore } from "@/stores/address-book";
+import { computed, ref } from "vue";
+import axios from "axios";
+import router from "@/router";
+import { useRoute } from "vue-router";
+
+import {
+  useAddressBookStore,
+  type CountryListItem,
+} from "@/stores/address-book";
 
 const addressBookStore = useAddressBookStore();
+const addressBookContacts = addressBookStore.addressBookContacts;
+const countryList = ref<Array<CountryListItem>>([]);
+const contactId = useRoute().params.id;
 
-const contact = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  country: "",
+const getAllCountries = () =>
+  axios
+    .get("https://restcountries.com/v2/all?fields=name,alpha3Code")
+    .then((res) => {
+      countryList.value = res.data;
+    });
+
+getAllCountries();
+
+const contact = ref({
+  firstName: addressBookContacts[contactId]?.firstName,
+  lastName: addressBookContacts[contactId]?.lastName,
+  email: addressBookContacts[contactId]?.email,
+  country: addressBookContacts[contactId]?.country,
+});
+
+const formValid = computed(() => {
+  const { firstName, lastName, email, country } = contact.value;
+
+  return (
+    firstName &&
+    lastName &&
+    country &&
+    /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)
+  );
+});
+
+const addContact = (): void => {
+  if (!formValid.value) {
+    return;
+  }
+  addressBookContacts.push(contact.value);
+  router.push("/");
+};
+
+console.log("addressBookContacts", addressBookContacts);
+
+const cancelForm = (): void => {
+  router.push("/");
 };
 </script>
 
@@ -21,12 +66,15 @@ const contact = {
         </RouterLink>
       </div>
       <div class="address-book-form-content">
-        <form @submit.prevent="addressBookStore.addContact"></form>
+        <form @submit.prevent="addContact"></form>
         <div class="address-book-form_input-row">
           <h3>First Name</h3>
           <input
             type="text"
+            id="firstName"
             v-model="contact.firstName"
+            placeholder="first name"
+            autocomplete="off"
             class="address-book-form_input"
             required
           />
@@ -35,7 +83,10 @@ const contact = {
           <h3>Last Name</h3>
           <input
             type="text"
+            id="lastName"
             v-model="contact.lastName"
+            placeholder="last name"
+            autocomplete="off"
             class="address-book-form_input"
             required
           />
@@ -44,7 +95,10 @@ const contact = {
           <h3>Email</h3>
           <input
             type="text"
+            id="email"
             v-model="contact.email"
+            placeholder="email"
+            autocomplete="off"
             class="address-book-form_input"
             required
           />
@@ -55,17 +109,26 @@ const contact = {
             name="country"
             id="country"
             v-model="contact.country"
+            autocomplete="off"
             class="address-book-form_input"
             required
           >
-            <option>Select country</option>
-            <option></option>
+            <option value="">Select country</option>
+            <option
+              v-for="country in countryList"
+              :value="country.name"
+              :key="country.alpha3Code"
+            >
+              {{ country.name }}
+            </option>
           </select>
         </div>
       </div>
       <div class="address-book-form-action">
-        <button type="submit">Create</button>
-        <button>Cancel</button>
+        <button class="btn btn-primary" type="submit" @click="addContact">
+          Create
+        </button>
+        <button class="btn btn-neutral" @click="cancelForm">Cancel</button>
       </div>
     </div>
   </div>
@@ -99,6 +162,12 @@ const contact = {
     display: flex;
     justify-content: center;
     align-items: flex-end;
+    margin-top: 5rem;
+
+    .btn {
+      padding: 1rem 2rem;
+      margin-right: 1.5rem;
+    }
   }
 
   &-wrapper {
@@ -116,5 +185,21 @@ const contact = {
   padding: 0 0;
   font-size: 1.5rem;
   background-color: transparent;
+}
+
+@media screen and (max-width: 1024px) {
+  .address-book-form {
+    &_input {
+      width: 80%;
+
+      &-row {
+        flex-direction: column;
+      }
+    }
+
+    &-action {
+      margin-top: 1rem;
+    }
+  }
 }
 </style>
