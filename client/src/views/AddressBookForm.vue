@@ -40,54 +40,41 @@ const validationErrors = ref({
   country: false,
 });
 
-const isRequired = (value: string) => (value ? false : true);
-
-const isEmailValid = (email: string) => {
-  const re =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  console.log("re", re.test(email));
-  return re.test(email);
-};
-
 const checkFirstName = () => {
-  let valid = false;
-
-  if (!isRequired(contact.value.firstName)) {
+  if (!contact.value.firstName) {
     validationErrors.value.firstName = true;
   } else {
-    valid = true;
+    validationErrors.value.firstName = false;
   }
-  return valid;
 };
 
 const checkLastName = () => {
-  let valid = false;
-
-  if (!isRequired(contact.value.lastName)) {
+  if (!contact.value.lastName) {
     validationErrors.value.lastName = true;
   } else {
-    valid = true;
+    validationErrors.value.lastName = false;
   }
-  return valid;
 };
 
 const checkEmail = () => {
-  let valid = false;
-
-  if (!isEmailValid(contact.value.email)) {
+  const isEmailValid = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(contact.value.email);
+  if (!isEmailValid) {
     validationErrors.value.email = true;
   } else {
-    valid = true;
+    validationErrors.value.email = false;
   }
-  console.log("VALID", valid);
-  return valid;
+};
+
+const checkCountry = () => {
+  if (!contact.value.country) {
+    validationErrors.value.country = true;
+  } else {
+    validationErrors.value.country = false;
+  }
 };
 
 const formValid = computed(() => {
   const { firstName, lastName, email, country } = contact.value;
-  checkFirstName();
-  checkLastName();
-  checkEmail();
 
   return (
     firstName &&
@@ -98,6 +85,11 @@ const formValid = computed(() => {
 });
 
 const addContact = (): void => {
+  checkFirstName();
+  checkLastName();
+  checkEmail();
+  checkCountry();
+
   if (!formValid.value) {
     return;
   }
@@ -131,12 +123,12 @@ const cancelForm = (): void => {
                 placeholder="first name"
                 autocomplete="off"
                 class="address-book-form_input"
-                :class="
-                  validationErrors.firstName ? 'validForm' : 'invalidForm'
-                "
+                :class="{ invalidForm: validationErrors.firstName }"
                 required
               />
-              <span class="invalid-form-text">First name cannot be blank</span>
+              <span v-if="validationErrors.firstName" class="invalid-form-text"
+                >First name cannot be blank</span
+              >
             </div>
           </div>
           <div class="address-book-form_input-row">
@@ -149,10 +141,12 @@ const cancelForm = (): void => {
                 placeholder="last name"
                 autocomplete="off"
                 class="address-book-form_input"
-                :class="validationErrors.lastName ? 'validForm' : 'invalidForm'"
+                :class="{ invalidForm: validationErrors.lastName }"
                 required
               />
-              <span class="invalid-form-text">Last name cannot be blank</span>
+              <span v-if="validationErrors.lastName" class="invalid-form-text"
+                >Last name cannot be blank</span
+              >
             </div>
           </div>
           <div class="address-book-form_input-row">
@@ -165,11 +159,12 @@ const cancelForm = (): void => {
                 placeholder="email"
                 autocomplete="off"
                 class="address-book-form_input"
-                :class="validationErrors.email ? 'validForm' : 'invalidForm'"
+                :class="{ invalidForm: validationErrors.email }"
                 required
               />
-              <span class="invalid-form-text">Email is not valid</span>
-              {{ validationErrors.email }}
+              <span v-if="validationErrors.email" class="invalid-form-text"
+                >Email is not valid</span
+              >
             </div>
           </div>
           <div class="address-book-form_input-row">
@@ -181,10 +176,10 @@ const cancelForm = (): void => {
                 v-model="contact.country"
                 autocomplete="off"
                 class="address-book-form_input"
-                :class="validationErrors.country ? 'validForm' : 'invalidForm'"
+                :class="{ invalidForm: validationErrors.country }"
                 required
               >
-                <option value="">Select country</option>
+                <option value="undefined">Select country</option>
                 <option
                   v-for="country in countryList"
                   :value="country.name"
@@ -193,7 +188,9 @@ const cancelForm = (): void => {
                   {{ country.name }}
                 </option>
               </select>
-              <span class="invalid-form-text">Country is not selected</span>
+              <span v-if="validationErrors.country" class="invalid-form-text"
+                >Country is not selected</span
+              >
             </div>
           </div>
         </form>
@@ -264,12 +261,6 @@ const cancelForm = (): void => {
   border-color: var(--error-color) !important;
   border: solid 2px #f0f0f0;
 }
-
-.validForm {
-  border-color: var(--success-color) !important;
-  border: solid 2px #f0f0f0;
-}
-
 .invalid-form-text {
   color: var(--error-color);
 }
