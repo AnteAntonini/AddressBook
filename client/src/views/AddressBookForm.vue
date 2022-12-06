@@ -12,11 +12,13 @@ import {
 const addressBookStore = useAddressBookStore();
 const addressBookContacts = addressBookStore.addressBookContacts;
 const countryList = ref<Array<CountryListItem>>([]);
-const contactId = useRoute().params.id;
+const contactId = useRoute().params.id as unknown as number;
 
 const getAllCountries = () =>
   axios
-    .get("https://restcountries.com/v2/all?fields=name,alpha3Code")
+    .get<CountryListItem[]>(
+      "https://restcountries.com/v2/all?fields=name,alpha3Code"
+    )
     .then((res) => {
       countryList.value = res.data;
     })
@@ -57,7 +59,9 @@ const checkLastName = () => {
 };
 
 const checkEmail = () => {
-  const isEmailValid = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(contact.value.email);
+  const isEmailValid = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
+    contact.value.email
+  );
   if (!isEmailValid) {
     validationErrors.value.email = true;
   } else {
