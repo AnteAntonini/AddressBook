@@ -101,7 +101,7 @@ const removeContact = useAddressBookStore().removeContact;
     overflow-y: auto;
     width: 100%;
     height: 100%;
-    background-color: var(--color-background);
+    background-color: var(--color-bg-1-light);
   }
 
   &-table {
@@ -117,16 +117,9 @@ const removeContact = useAddressBookStore().removeContact;
     }
 
     thead {
-      background-color: var(--sc-bg-table-header);
       text-align: left;
-      tr {
-        &:hover {
-          background-color: var(--sc-bg-table-header);
-        }
-      }
       tr th {
         padding: 1.5rem var(--table-padding-x) 0.625rem;
-        color: var(--sc-text-primary-2);
         font-size: 0.75rem;
         text-transform: uppercase;
       }

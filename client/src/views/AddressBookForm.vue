@@ -33,8 +33,61 @@ const contact = ref({
   country: addressBookContacts[contactId]?.country,
 });
 
+const validationErrors = ref({
+  firstName: false,
+  lastName: false,
+  email: false,
+  country: false,
+});
+
+const isRequired = (value: string) => (value ? false : true);
+
+const isEmailValid = (email: string) => {
+  const re =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  console.log("re", re.test(email));
+  return re.test(email);
+};
+
+const checkFirstName = () => {
+  let valid = false;
+
+  if (!isRequired(contact.value.firstName)) {
+    validationErrors.value.firstName = true;
+  } else {
+    valid = true;
+  }
+  return valid;
+};
+
+const checkLastName = () => {
+  let valid = false;
+
+  if (!isRequired(contact.value.lastName)) {
+    validationErrors.value.lastName = true;
+  } else {
+    valid = true;
+  }
+  return valid;
+};
+
+const checkEmail = () => {
+  let valid = false;
+
+  if (!isEmailValid(contact.value.email)) {
+    validationErrors.value.email = true;
+  } else {
+    valid = true;
+  }
+  console.log("VALID", valid);
+  return valid;
+};
+
 const formValid = computed(() => {
   const { firstName, lastName, email, country } = contact.value;
+  checkFirstName();
+  checkLastName();
+  checkEmail();
 
   return (
     firstName &&
@@ -70,59 +123,78 @@ const cancelForm = (): void => {
         <form @submit.prevent="addContact">
           <div class="address-book-form_input-row">
             <h3>First Name</h3>
-            <input
-              type="text"
-              id="firstName"
-              v-model="contact.firstName"
-              placeholder="first name"
-              autocomplete="off"
-              class="address-book-form_input"
-              required
-            />
+            <div class="address-book-form_input-wrapper">
+              <input
+                type="text"
+                id="firstName"
+                v-model="contact.firstName"
+                placeholder="first name"
+                autocomplete="off"
+                class="address-book-form_input"
+                :class="
+                  validationErrors.firstName ? 'validForm' : 'invalidForm'
+                "
+                required
+              />
+              <span class="invalid-form-text">First name cannot be blank</span>
+            </div>
           </div>
           <div class="address-book-form_input-row">
             <h3>Last Name</h3>
-            <input
-              type="text"
-              id="lastName"
-              v-model="contact.lastName"
-              placeholder="last name"
-              autocomplete="off"
-              class="address-book-form_input"
-              required
-            />
+            <div class="address-book-form_input-wrapper">
+              <input
+                type="text"
+                id="lastName"
+                v-model="contact.lastName"
+                placeholder="last name"
+                autocomplete="off"
+                class="address-book-form_input"
+                :class="validationErrors.lastName ? 'validForm' : 'invalidForm'"
+                required
+              />
+              <span class="invalid-form-text">Last name cannot be blank</span>
+            </div>
           </div>
           <div class="address-book-form_input-row">
             <h3>Email</h3>
-            <input
-              type="text"
-              id="email"
-              v-model="contact.email"
-              placeholder="email"
-              autocomplete="off"
-              class="address-book-form_input"
-              required
-            />
+            <div class="address-book-form_input-wrapper">
+              <input
+                type="text"
+                id="email"
+                v-model="contact.email"
+                placeholder="email"
+                autocomplete="off"
+                class="address-book-form_input"
+                :class="validationErrors.email ? 'validForm' : 'invalidForm'"
+                required
+              />
+              <span class="invalid-form-text">Email is not valid</span>
+              {{ validationErrors.email }}
+            </div>
           </div>
           <div class="address-book-form_input-row">
             <h3>Country</h3>
-            <select
-              name="country"
-              id="country"
-              v-model="contact.country"
-              autocomplete="off"
-              class="address-book-form_input"
-              required
-            >
-              <option value="">Select country</option>
-              <option
-                v-for="country in countryList"
-                :value="country.name"
-                :key="country.alpha3Code"
+            <div class="address-book-form_input-wrapper">
+              <select
+                name="country"
+                id="country"
+                v-model="contact.country"
+                autocomplete="off"
+                class="address-book-form_input"
+                :class="validationErrors.country ? 'validForm' : 'invalidForm'"
+                required
               >
-                {{ country.name }}
-              </option>
-            </select>
+                <option value="">Select country</option>
+                <option
+                  v-for="country in countryList"
+                  :value="country.name"
+                  :key="country.alpha3Code"
+                >
+                  {{ country.name }}
+                </option>
+              </select>
+              <span class="invalid-form-text">Country is not selected</span>
+            </div>
           </div>
         </form>
       </div>
@@ -140,7 +212,7 @@ const cancelForm = (): void => {
 .address-book-form {
   height: 60%;
   width: 40%;
-  background-color: #fff;
+  background-color: var(--color-bg-1-light);
 
   &-title {
     display: flex;
@@ -150,8 +222,13 @@ const cancelForm = (): void => {
   }
 
   &_input {
-    width: 70%;
     padding: 0.75rem;
+
+    &-wrapper {
+      width: 70%;
+      display: flex;
+      flex-direction: column;
+    }
 
     &-row {
       display: flex;
@@ -165,7 +242,7 @@ const cancelForm = (): void => {
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    margin-top: 5rem;
+    margin-top: 2rem;
     padding: 0 2rem;
 
     .btn {
@@ -180,10 +257,22 @@ const cancelForm = (): void => {
     align-items: center;
     height: 100%;
     width: 100%;
-    background-color: var(--vt-c-white-mute);
   }
 }
 
+.invalidForm {
+  border-color: var(--error-color) !important;
+  border: solid 2px #f0f0f0;
+}
+
+.validForm {
+  border-color: var(--success-color) !important;
+  border: solid 2px #f0f0f0;
+}
+
+.invalid-form-text {
+  color: var(--error-color);
+}
 .form-btn {
   color: grey;
   padding: 0 0;
@@ -197,7 +286,9 @@ const cancelForm = (): void => {
     width: 100%;
 
     &_input {
-      width: 80%;
+      &-wrapper {
+        width: 80%;
+      }
 
       &-row {
         flex-direction: column;
@@ -208,7 +299,7 @@ const cancelForm = (): void => {
     &-action {
       flex-direction: column;
       align-items: center;
-      margin: 0;
+      margin-top: 2rem;
 
       button {
         width: 80%;

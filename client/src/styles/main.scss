@@ -9,7 +9,7 @@
 .btn {
   display: inline-block;
   padding: 0.5rem 1rem;
-  color: var(--vt-c-white);
+  color: var(--primary-1-light);
   border-radius: 4px;
   border-style: none;
   font-weight: bold;
@@ -22,18 +22,18 @@
 
   &-neutral {
     background-color: transparent;
-    border-style: 1px solid lightgray;
-    border: 1px solid lightgray;
+    border-style: 1px solid var(--btn-neutral);
+    border: 1px solid var(--btn-neutral);
     color: black;
   }
 
   &-primary {
-    background-color: #03a9f4;
-    border-color: #03a9f4;
+    background-color: var(--btn-primary);
+    border-color: var(--btn-primary);
   }
    
   &-warning {
-    background-color: #ff5252;
-    border-color: #ff5252;
+    background-color: var(--btn-warning);
+    border-color: var(--btn-warning);
   }
 }
