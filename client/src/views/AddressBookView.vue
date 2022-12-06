@@ -52,12 +52,30 @@ const removeContact = useAddressBookStore().removeContact;
               <td>{{ item.lastName }}</td>
               <td>{{ item.email }}</td>
               <td>{{ item.country }}</td>
-              <RouterLink :to="{ name: 'form', params: { id: index } }">
-                <button class="btn btn-primary btn-spacing">Edit</button>
-              </RouterLink>
-              <button class="btn btn-warning" @click="removeContact(index)">
-                Delete
-              </button>
+              <div class="address-book_btn-action-mobile">
+                <RouterLink :to="{ name: 'form', params: { id: index } }">
+                  <img
+                    src="../assets/icons/edit.svg"
+                    class="edit-icon"
+                    alt="edit icon"
+                  />
+                </RouterLink>
+                <button class="btn-icon" @click="removeContact(index)">
+                  <img
+                    src="../assets/icons/delete.svg"
+                    class="delete-icon"
+                    alt="delete icon"
+                  />
+                </button>
+              </div>
+              <div class="address-book_btn-action">
+                <RouterLink :to="{ name: 'form', params: { id: index } }">
+                  <button class="btn btn-primary btn-spacing">Edit</button>
+                </RouterLink>
+                <button class="btn btn-warning" @click="removeContact(index)">
+                  Delete
+                </button>
+              </div>
             </tr>
           </template>
         </tbody>
@@ -111,7 +129,6 @@ const removeContact = useAddressBookStore().removeContact;
         color: var(--sc-text-primary-2);
         font-size: 0.75rem;
         text-transform: uppercase;
-        word-break: break-word;
       }
     }
 
@@ -122,9 +139,47 @@ const removeContact = useAddressBookStore().removeContact;
       height: 3rem;
     }
   }
+
+  &_btn-action-mobile {
+    display: none;
+  }
+}
+
+.btn-icon {
+  border: none;
+  background: none;
 }
 
 .btn-spacing {
   margin: 0.5rem 1rem;
+}
+
+@media screen and (max-width: 1024px) {
+  .address-book {
+    padding: 0;
+
+    &-table {
+      tr th {
+        padding: 0.5rem 1rem !important;
+      }
+
+      tr td {
+        padding: 0rem 1rem;
+      }
+    }
+
+    &_btn-action {
+      display: none;
+    }
+
+    &_btn-action-mobile {
+      padding: 1rem;
+      display: block;
+
+      .edit-icon {
+        margin-left: 0.5rem;
+      }
+    }
+  }
 }
 </style>

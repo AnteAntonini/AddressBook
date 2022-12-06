@@ -19,8 +19,6 @@ export const useAddressBookStore = defineStore(
       addressBookContacts.value.splice(index, 1);
     };
 
-    console.log("addressBookContacts", addressBookContacts.value);
-
     return {
       addressBookContacts,
       addContact,

@@ -19,6 +19,9 @@ const getAllCountries = () =>
     .get("https://restcountries.com/v2/all?fields=name,alpha3Code")
     .then((res) => {
       countryList.value = res.data;
+    })
+    .catch((err) => {
+      return err;
     });
 
 getAllCountries();
@@ -49,8 +52,6 @@ const addContact = (): void => {
   router.push("/");
 };
 
-console.log("addressBookContacts", addressBookContacts);
-
 const cancelForm = (): void => {
   router.push("/");
 };
@@ -66,63 +67,64 @@ const cancelForm = (): void => {
         </RouterLink>
       </div>
       <div class="address-book-form-content">
-        <form @submit.prevent="addContact"></form>
-        <div class="address-book-form_input-row">
-          <h3>First Name</h3>
-          <input
-            type="text"
-            id="firstName"
-            v-model="contact.firstName"
-            placeholder="first name"
-            autocomplete="off"
-            class="address-book-form_input"
-            required
-          />
-        </div>
-        <div class="address-book-form_input-row">
-          <h3>Last Name</h3>
-          <input
-            type="text"
-            id="lastName"
-            v-model="contact.lastName"
-            placeholder="last name"
-            autocomplete="off"
-            class="address-book-form_input"
-            required
-          />
-        </div>
-        <div class="address-book-form_input-row">
-          <h3>Email</h3>
-          <input
-            type="text"
-            id="email"
-            v-model="contact.email"
-            placeholder="email"
-            autocomplete="off"
-            class="address-book-form_input"
-            required
-          />
-        </div>
-        <div class="address-book-form_input-row">
-          <h3>Country</h3>
-          <select
-            name="country"
-            id="country"
-            v-model="contact.country"
-            autocomplete="off"
-            class="address-book-form_input"
-            required
-          >
-            <option value="">Select country</option>
-            <option
-              v-for="country in countryList"
-              :value="country.name"
-              :key="country.alpha3Code"
+        <form @submit.prevent="addContact">
+          <div class="address-book-form_input-row">
+            <h3>First Name</h3>
+            <input
+              type="text"
+              id="firstName"
+              v-model="contact.firstName"
+              placeholder="first name"
+              autocomplete="off"
+              class="address-book-form_input"
+              required
+            />
+          </div>
+          <div class="address-book-form_input-row">
+            <h3>Last Name</h3>
+            <input
+              type="text"
+              id="lastName"
+              v-model="contact.lastName"
+              placeholder="last name"
+              autocomplete="off"
+              class="address-book-form_input"
+              required
+            />
+          </div>
+          <div class="address-book-form_input-row">
+            <h3>Email</h3>
+            <input
+              type="text"
+              id="email"
+              v-model="contact.email"
+              placeholder="email"
+              autocomplete="off"
+              class="address-book-form_input"
+              required
+            />
+          </div>
+          <div class="address-book-form_input-row">
+            <h3>Country</h3>
+            <select
+              name="country"
+              id="country"
+              v-model="contact.country"
+              autocomplete="off"
+              class="address-book-form_input"
+              required
             >
-              {{ country.name }}
-            </option>
-          </select>
-        </div>
+              <option value="">Select country</option>
+              <option
+                v-for="country in countryList"
+                :value="country.name"
+                :key="country.alpha3Code"
+              >
+                {{ country.name }}
+              </option>
+            </select>
+          </div>
+        </form>
       </div>
       <div class="address-book-form-action">
         <button class="btn btn-primary" type="submit" @click="addContact">
@@ -143,6 +145,7 @@ const cancelForm = (): void => {
   &-title {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 1rem 2rem;
   }
 
@@ -163,6 +166,7 @@ const cancelForm = (): void => {
     justify-content: center;
     align-items: flex-end;
     margin-top: 5rem;
+    padding: 0 2rem;
 
     .btn {
       padding: 1rem 2rem;
@@ -189,16 +193,27 @@ const cancelForm = (): void => {
 
 @media screen and (max-width: 1024px) {
   .address-book-form {
+    height: 100%;
+    width: 100%;
+
     &_input {
       width: 80%;
 
       &-row {
         flex-direction: column;
+        padding: 0.5rem 2rem 1rem;
       }
     }
 
     &-action {
-      margin-top: 1rem;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+
+      button {
+        width: 80%;
+        margin: 0.25rem 0 !important;
+      }
     }
   }
 }
