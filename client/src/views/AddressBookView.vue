@@ -97,10 +97,8 @@ const removeContact = useAddressBookStore().removeContact;
   }
 
   &-table-wrapper {
-    overflow-x: auto;
     overflow-y: auto;
     width: 100%;
-    height: 100%;
     background-color: var(--color-bg-1-light);
   }
 
@@ -138,22 +136,13 @@ const removeContact = useAddressBookStore().removeContact;
   }
 }
 
-.btn-icon {
-  border: none;
-  background: none;
-}
-
-.btn-spacing {
-  margin: 0.5rem 1rem;
-}
-
 @media screen and (max-width: 1024px) {
   .address-book {
     padding: 0;
 
     &-table {
       tr th {
-        padding: 0.5rem 1rem !important;
+        padding: 0.5rem 1rem;
       }
 
       tr td {

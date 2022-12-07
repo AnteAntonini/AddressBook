@@ -98,11 +98,11 @@ const addContact = (): void => {
     return;
   }
   addressBookContacts.push(contact.value);
-  router.push("/");
+  router.push({ name: "addressBook" });
 };
 
-const cancelForm = (): void => {
-  router.push("/");
+const closeForm = (): void => {
+  router.push({ name: "addressBook" });
 };
 </script>
 
@@ -111,9 +111,7 @@ const cancelForm = (): void => {
     <div class="address-book-form">
       <div class="address-book-form-title">
         <h1>Add Contact</h1>
-        <RouterLink to="/">
-          <button class="btn form-btn">X</button>
-        </RouterLink>
+        <button @click="closeForm" class="btn form-btn">X</button>
       </div>
       <div class="address-book-form-content">
         <form @submit.prevent="addContact">
@@ -203,7 +201,7 @@ const cancelForm = (): void => {
         <button class="btn btn-primary" type="submit" @click="addContact">
           Create
         </button>
-        <button class="btn btn-neutral" @click="cancelForm">Cancel</button>
+        <button class="btn btn-neutral" @click="closeForm">Cancel</button>
       </div>
     </div>
   </div>
