@@ -110,7 +110,7 @@ const closeForm = (): void => {
   <div class="address-book-form-wrapper">
     <div class="address-book-form">
       <div class="address-book-form-title">
-        <h1>Add Contact</h1>
+        <h1>{{ contactId ? "Edit" : "Add" }} Contact</h1>
         <button @click="closeForm" class="btn form-btn">X</button>
       </div>
       <div class="address-book-form-content">
@@ -241,7 +241,7 @@ const closeForm = (): void => {
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    margin-top: 2rem;
+    margin-top: 3rem;
     padding: 0 2rem;
 
     .btn {

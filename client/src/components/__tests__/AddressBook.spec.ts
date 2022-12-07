@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
 
 import { mount } from "@vue/test-utils";
-import AddressBookView from "@/views/AddressBookView.vue";
+import AddressBookView from "@/views/AddressBook.vue";
 
 describe("AddressBookView", () => {
   beforeEach(() => {

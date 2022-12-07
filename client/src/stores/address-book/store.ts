@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import type { AddressBookTableItem } from "./types";
 
 export const useAddressBookStore = defineStore(
