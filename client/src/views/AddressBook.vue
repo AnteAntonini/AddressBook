@@ -31,7 +31,7 @@ const removeContact = useAddressBookStore().removeContact;
 </script>
 
 <template>
-  <main class="address-book">
+  <main class="address-book d-flex-center">
     <h1 class="address-book-title">Address Book</h1>
     <RouterLink to="/form">
       <button class="btn btn-large btn-primary">Add Contact</button>
@@ -86,10 +86,7 @@ const removeContact = useAddressBookStore().removeContact;
 
 <style scoped lang="scss">
 .address-book {
-  display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   padding: 4rem 10rem;
 
   &-title {

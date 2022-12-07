@@ -107,7 +107,7 @@ const closeForm = (): void => {
 </script>
 
 <template>
-  <div class="address-book-form-wrapper">
+  <div class="address-book-form-wrapper d-flex-center">
     <div class="address-book-form">
       <div class="address-book-form-title">
         <h1>{{ contactId ? "Edit" : "Add" }} Contact</h1>
@@ -251,9 +251,6 @@ const closeForm = (): void => {
   }
 
   &-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100%;
     width: 100%;
   }
