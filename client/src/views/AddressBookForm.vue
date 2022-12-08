@@ -43,6 +43,8 @@ const validationErrors = ref({
 });
 
 const checkForm = () => {
+  const { firstName, lastName, country } = contact.value;
+
   validationErrors.value.firstName = !contact.value.firstName;
   validationErrors.value.lastName = !contact.value.lastName;
   const isEmailValid = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
@@ -50,23 +52,14 @@ const checkForm = () => {
   );
   validationErrors.value.email = !isEmailValid;
   validationErrors.value.country = !contact.value.country;
+
+  return firstName && lastName && country && isEmailValid;
 };
 
-const formValid = computed(() => {
-  const { firstName, lastName, email, country } = contact.value;
-
-  return (
-    firstName &&
-    lastName &&
-    country &&
-    /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)
-  );
-});
-
 const addContact = (): void => {
-  checkForm();
+  const isFormInvalid = checkForm();
 
-  if (!formValid.value) {
+  if (!isFormInvalid) {
     return;
   }
   addressBookStore.addContact(contact.value);
