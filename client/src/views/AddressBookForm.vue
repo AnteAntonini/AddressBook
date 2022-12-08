@@ -42,10 +42,6 @@ const validationErrors = ref({
   country: false,
 });
 
-const isFormValid = () => {
-  const { firstName, lastName, email, country } = contact.value;
-}
-
 const checkFirstName = () => {
   validationErrors.value.firstName = !contact.value.firstName;
 };
