@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "axios";
 import router from "@/router";
 import { useRoute } from "vue-router";
@@ -25,8 +25,6 @@ const getAllCountries = () =>
     .catch((err) => {
       return err;
     });
-
-getAllCountries();
 
 const contact = ref({
   firstName: addressBookContacts[contactId]?.firstName,
@@ -69,6 +67,10 @@ const addContact = (): void => {
 const closeForm = (): void => {
   router.push({ name: "addressBook" });
 };
+
+onMounted(() => {
+  getAllCountries();
+});
 </script>
 
 <template>
