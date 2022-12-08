@@ -42,6 +42,10 @@ const validationErrors = ref({
   country: false,
 });
 
+const isFormValid = () => {
+  const { firstName, lastName, email, country } = contact.value;
+}
+
 const checkFirstName = () => {
   validationErrors.value.firstName = !contact.value.firstName;
 };
@@ -81,7 +85,7 @@ const addContact = (): void => {
   if (!formValid.value) {
     return;
   }
-  addressBookContacts.push(contact.value);
+  addressBookStore.addContact(contact.value);
   router.push({ name: "addressBook" });
 };
 
