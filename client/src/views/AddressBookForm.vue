@@ -43,38 +43,22 @@ const validationErrors = ref({
 });
 
 const checkFirstName = () => {
-  if (!contact.value.firstName) {
-    validationErrors.value.firstName = true;
-  } else {
-    validationErrors.value.firstName = false;
-  }
+  validationErrors.value.firstName = !contact.value.firstName;
 };
 
 const checkLastName = () => {
-  if (!contact.value.lastName) {
-    validationErrors.value.lastName = true;
-  } else {
-    validationErrors.value.lastName = false;
-  }
+  validationErrors.value.lastName = !contact.value.lastName;
 };
 
 const checkEmail = () => {
   const isEmailValid = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
     contact.value.email
   );
-  if (!isEmailValid) {
-    validationErrors.value.email = true;
-  } else {
-    validationErrors.value.email = false;
-  }
+  validationErrors.value.email = !isEmailValid;
 };
 
 const checkCountry = () => {
-  if (!contact.value.country) {
-    validationErrors.value.country = true;
-  } else {
-    validationErrors.value.country = false;
-  }
+  validationErrors.value.country = !contact.value.country;
 };
 
 const formValid = computed(() => {
