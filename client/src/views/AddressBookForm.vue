@@ -42,22 +42,13 @@ const validationErrors = ref({
   country: false,
 });
 
-const checkFirstName = () => {
+const checkForm = () => {
   validationErrors.value.firstName = !contact.value.firstName;
-};
-
-const checkLastName = () => {
   validationErrors.value.lastName = !contact.value.lastName;
-};
-
-const checkEmail = () => {
   const isEmailValid = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
     contact.value.email
   );
   validationErrors.value.email = !isEmailValid;
-};
-
-const checkCountry = () => {
   validationErrors.value.country = !contact.value.country;
 };
 
@@ -73,10 +64,7 @@ const formValid = computed(() => {
 });
 
 const addContact = (): void => {
-  checkFirstName();
-  checkLastName();
-  checkEmail();
-  checkCountry();
+  checkForm();
 
   if (!formValid.value) {
     return;
